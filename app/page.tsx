@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
 import type { CSSProperties } from "react";
 import { DIRECT_SENDER, computeSenderAddOn, getAllSenders } from "@/lib/sampleSenderModel";
 import { computeCombinedRoute } from "@/lib/routeRanking";
@@ -829,8 +829,8 @@ function PairingGrid({
           </div>
         ))}
         {senders.map((s) => (
-          <>
-            <div key={`${s.id}-label`} style={{ display: "flex", flexDirection: "column", justifyContent: "center", padding: "0 8px", fontSize: 15, fontWeight: 600 }}>
+          <Fragment key={s.id}>
+            <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", padding: "0 8px", fontSize: 15, fontWeight: 600 }}>
               <span>{s.name}</span>
               <span style={{ fontSize: 12, fontWeight: 400, color: "#8FA0AA" }}>{s.tag === "sample" ? "sample" : s.kind}</span>
             </div>
@@ -862,7 +862,7 @@ function PairingGrid({
                 </button>
               );
             })}
-          </>
+          </Fragment>
         ))}
       </div>
     </div>
