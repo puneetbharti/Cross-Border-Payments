@@ -64,6 +64,9 @@ export async function GET(request: Request) {
     excluded_reason: cost.excluded_reason,
     amount_received: cost.amount_received !== null ? formatDisplayAmount(cost.amount_received) : null,
     effective_rate: cost.effective_rate,
+    fee_from_currency: cost.fee_from_currency !== null ? formatDisplayAmount(cost.fee_from_currency) : null,
+    rate_markup_to_currency:
+      cost.rate_markup_to_currency !== null ? formatDisplayAmount(cost.rate_markup_to_currency) : null,
   }));
 
   return Response.json({

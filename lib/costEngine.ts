@@ -14,6 +14,8 @@ export function computeQuoteCost(
       effective_rate: null,
       amount_received: null,
       total_cost_from_currency: null,
+      fee_from_currency: null,
+      rate_markup_to_currency: null,
     };
   }
 
@@ -24,6 +26,8 @@ export function computeQuoteCost(
       effective_rate: null,
       amount_received: null,
       total_cost_from_currency: null,
+      fee_from_currency: null,
+      rate_markup_to_currency: null,
     };
   }
 
@@ -35,6 +39,7 @@ export function computeQuoteCost(
   const effectiveRate = benchmarkRate * (1 - quote.fx_spread_bps / 10000);
   const amountReceived = netSend * effectiveRate;
   const totalCost = (amountFromCurrency * benchmarkRate - amountReceived) / benchmarkRate;
+  const rateMarkup = netSend * (benchmarkRate - effectiveRate);
 
   return {
     provider_id,
@@ -42,6 +47,8 @@ export function computeQuoteCost(
     effective_rate: effectiveRate,
     amount_received: amountReceived,
     total_cost_from_currency: totalCost,
+    fee_from_currency: fee,
+    rate_markup_to_currency: rateMarkup,
   };
 }
 

@@ -26,12 +26,22 @@ describe("computeQuoteCost", () => {
     expect(result.total_cost_from_currency).toBeCloseTo(16.93, 5);
   });
 
+  it("breaks the cost down into a from-currency fee and a to-currency rate markup", () => {
+    const result = computeQuoteCost(baseQuote, 90, 1000);
+    // fee = flat_fee (2) + 1000 * 0.5% = 2 + 5 = 7
+    expect(result.fee_from_currency).toBeCloseTo(7, 5);
+    // netSend = 993; markup = netSend * (benchmarkRate - effectiveRate) = 993 * 0.9
+    expect(result.rate_markup_to_currency).toBeCloseTo(893.7, 5);
+  });
+
   it("excludes a quote when the amount is below the stated minimum", () => {
     const quote = { ...baseQuote, amount_tier: { min: 1000, max: null } };
     const result = computeQuoteCost(quote, 90, 999);
     expect(result.excluded_reason).toBe("minimum transfer: 1000.00 EUR");
     expect(result.effective_rate).toBeNull();
     expect(result.amount_received).toBeNull();
+    expect(result.fee_from_currency).toBeNull();
+    expect(result.rate_markup_to_currency).toBeNull();
   });
 
   it("does not exclude a quote when the amount exactly equals the minimum", () => {

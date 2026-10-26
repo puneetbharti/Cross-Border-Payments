@@ -47,4 +47,6 @@ export interface CostResult {
   effective_rate: number | null;
   amount_received: number | null;
   total_cost_from_currency: number | null;
+  fee_from_currency: number | null;
+  rate_markup_to_currency: number | null;
 }
