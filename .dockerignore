@@ -1,0 +1,14 @@
+node_modules
+.next
+data
+.git
+.superpowers
+.swc
+coverage
+*.tsbuildinfo
+npm-debug.log*
+.env*
+Design
+docs
+tests
+jest.config.js

@@ -38,6 +38,24 @@ npm run test:watch  # re-run on change
 
 All of this project's business logic (`lib/`) is unit-tested with Jest, independent of the live network calls — tests inject fake fetch/clock dependencies rather than hitting real banks. `npx tsc --noEmit` comes back clean. `npm run lint` has one known, deliberately-deferred finding (`lib/types.ts`, an `any` in a fetch-response type that's narrowed immediately after) — everything else should be clean.
 
+## Deploying with Docker
+
+```bash
+docker compose up -d --build
+```
+
+This builds a production image (`npm run build` inside the container, so
+`better-sqlite3` and `pdf-parse`'s native pieces compile for the container's
+own platform rather than your host's) and serves it on `http://localhost:3030`.
+The SQLite cache lives in a named Docker volume (`cache-data`), so it survives
+container restarts and rebuilds the same way `data/cache.sqlite` does locally.
+
+Not using `output: "standalone"` here on purpose: its dependency tracer
+dropped `pdfjs-dist`'s optional `@napi-rs/canvas` dependency (needed at
+runtime even for text-only PDF extraction), crashing every `/api/compare`
+request. Shipping the full `node_modules` avoids re-litigating that for every
+native dependency.
+
 ## Project layout
 
 - `lib/` — the actual logic: benchmark rate fetching + caching, provider quote fetching (PDF parsing) + caching, cost computation/ranking, the SQLite-backed key-value store.
